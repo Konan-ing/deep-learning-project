@@ -19,4 +19,4 @@ model.compile(optimizer="adam", loss="mse")
 model.fit(X, y, epochs=20, verbose=0)
 
 # sauvegarde
-model.save("model")
+model.save("model.h5")

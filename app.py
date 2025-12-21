@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app) # Indispensable pour que ton site puisse parler à l'API
 
 # Charger le modèle (le dossier nommé "model")
-model = tf.keras.models.load_model('model')
+model = tf.keras.models.load_model('model.h5')
 
 @app.route('/predict', methods=['POST'])
 def predict():
