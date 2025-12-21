@@ -2,4 +2,4 @@ flask
 tensorflow
 numpy
 flask-cors
-gunicorn app:app
+gunicorn
