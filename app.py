@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
+import os
 
 app = Flask(__name__)
 CORS(app) # Indispensable pour que ton site puisse parler à l'API
@@ -21,4 +22,6 @@ def predict():
     return jsonify({'resultat': float(prediction[0][0])})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Utilise le port de Render (PORT) ou 5000 par défaut en local
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
