@@ -22,6 +22,4 @@ def predict():
     return jsonify({'resultat': float(prediction[0][0])})
 
 if __name__ == '__main__':
-    # Utilise le port de Render (PORT) ou 5000 par défaut en local
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=7860)
