@@ -1,5 +1,5 @@
-flask
+fastapi
+uvicorn
 tensorflow
 numpy
-flask-cors
 gunicorn

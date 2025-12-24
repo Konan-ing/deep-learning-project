@@ -1,27 +1,35 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+import os
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import tensorflow as tf
 import numpy as np
-import os
 
-app = Flask(__name__)
-CORS(app) # Indispensable pour que ton site puisse parler à l'API
+app = FastAPI()
 
-# Charger le modèle (le dossier nommé "model")
-model = tf.keras.models.load_model('model.h5')
+# Configuration du CORS pour autoriser votre portfolio GitHub Pages
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://konan-ing.github.io"], 
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.get_json()
-    valeur = float(data['valeur'])
+# Chargement du modèle sauvegardé
+model = tf.keras.models.load_model("model.h5")
+
+class DataInput(BaseModel):
+    data: float
+
+@app.post("/predict")
+async def predict(item: DataInput):
+    # Préparation de la donnée pour le modèle
+    input_val = np.array([[item.data]])
+    prediction = model.predict(input_val)
     
-    # Prédiction
-    entree = np.array([[valeur]])
-    prediction = model.predict(entree)
-    
-    return jsonify({'resultat': float(prediction[0][0])})
+    return {"resultat": float(prediction[0][0])}
 
-if __name__ == '__main__':
-    # Récupère le port envoyé par l'hébergeur, sinon utilise 7860
-    port = int(os.environ.get("PORT", 7860))
-    app.run(host='0.0.0.0', port=port)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=port)
