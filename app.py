@@ -10,7 +10,8 @@ app = FastAPI()
 # Configuration du CORS pour autoriser votre portfolio GitHub Pages
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://konan-ing.github.io"], 
+    allow_origins=["https://konan-ing.github.io"],
+    allow_credentials=True, 
     allow_methods=["*"],
     allow_headers=["*"],
 )
